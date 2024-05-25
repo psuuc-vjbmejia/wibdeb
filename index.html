@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMS</title>
+  <style>
+  .container {
+      width: 80%; /* adjust the width to your liking */
+      margin: 40px auto; /* center the container horizontally */
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+  .center-table {
+      margin: 0 auto; /* center the table horizontally */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Product Price List</h1>
+    <form id="form">
+      <input type="text" id="name" name="Name" placeholder="Item Name" required>
+      <button type="submit" id="add-btn">Add</button>
+    </form>
+    <table id="table" class="center-table">
+      <tr>
+        <th>Item Name</th>
+        <th>Actions</th>
+      </tr>
+      <tbody id="table-body">
+        <!-- table data will be rendered here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // store data in an array
+    let data = [];
+
+    // render table data
+    function renderTable() {
+      const tableBody = document.getElementById("table-body");
+      tableBody.innerHTML = "";
+      data.forEach((item, index) => {
+        const row = `
+          <tr>
+            <td>${item.name}</td>
+            <td>
+              <button class="delete-btn" data-index="${index}">Delete</button>
+            </td>
+          </tr>
+        `;
+        tableBody.innerHTML += row;
+      });
+    }
+
+    // add event listener to add button
+    document.getElementById("add-btn").addEventListener("click", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      if (name) {
+        data.push({ name });
+        document.getElementById("name").value = "";
+        renderTable();
+      }
+    });
+
+    // add event listener to delete buttons
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("delete-btn")) {
+        const index = e.target.dataset.index;
+        data.splice(index, 1);
+        renderTable();
+      }
+    });
+
+    // initial render
+    renderTable();
+  </script>
+</body>
+</html>
