@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMS</title>
+  <style>
+   .container {
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      display: block;
+      width: 50%;
+      margin: 40px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+    .tables {
+  border-collapse: collapse;
+
+  width: 80%;
+  margin: 0 auto;
+}
+.tables th,
+.tables td {
+  padding: 8px;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form id="form">
+      <input type="text" id="name" name="Name" placeholder="Task" required>
+      <button type="submit">Add</button>
+      <br>
+    </form>
+    <br>
+    <button onclick="deleteChecked()">Delete Checked</button>
+    <table id="table" class="tables">
+      <tr>
+        <th></th>
+        <th>Task</th>
+        <th></th>
+      </tr>
+    </table>
+  </div>
+  <script>
+    let data = [];
+    const form = document.getElementById("form");
+    const table = document.getElementById("table");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const name = document.getElementById("name").value;
+      data.push({ id: data.length + 1, name });
+      displayData();
+      form.reset();
+    });
+
+    function displayData() {
+      table.innerHTML = `
+        <tr>
+          <th></th>
+          <th>Task</th>
+          <th></th>
+        </tr>
+      `;
+      data.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><input type="checkbox" id="check${item.id}" value="${item.id}"></td>
+          <td>${item.name}</td>
+          <button onclick="deleteData(${item.id})">Delete</button>
+        `;
+
+        
+        table.appendChild(row);
+      });
+    }
+
+    function deleteData(id) {
+    data = data.filter(item => item.id !== id);
+    displayData(data);
+}
+    function deleteChecked() {
+      data = data.filter(item =>!document.getElementById(`check${item.id}`).checked);
+      displayData();
+    }
+  </script>
+</body>
+</html>
